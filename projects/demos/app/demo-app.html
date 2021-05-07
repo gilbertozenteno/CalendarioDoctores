@@ -1,0 +1,80 @@
+<nav
+  class="navbar navbar-expand-lg navbar-light bg-light fixed-top"
+  [class.navbar-dark]="activeDemo?.darkTheme"
+  [class.bg-dark]="activeDemo?.darkTheme"
+  role="navigation"
+>
+  <a class="navbar-brand" href="#"></a>
+
+  <button
+    type="button"
+    class="navbar-toggler"
+    (click)="isMenuVisible = !isMenuVisible"
+  >
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+ 
+</nav>
+
+<ng-template #loading>
+  <div class="card">
+    <div class="card-body text-center">
+      <i class="fas fa-spin fa-spinner fa-5x"></i> <br />
+      Cargando calendario...
+    </div>
+  </div>
+</ng-template>
+
+<div class="container-fluid">
+  <div class="row fill-height">
+    <div
+      class="col-md-9 col-xl-10 fill-height scroll-y"
+      mwlDraggableScrollContainer
+    >
+      <div class="card" *ngIf="firstDemoLoaded; else loading">
+        
+        <div class="card-body">
+          <ngb-tabset [destroyOnHide]="false">
+            <ngb-tab>
+              <ng-template ngbTabTitle>
+                <i class="fas fa-fw fa-laptop"></i> CALENDARIO
+              </ng-template>
+              <ng-template ngbTabContent>
+                <div class="spacer-top"><router-outlet></router-outlet></div>
+              </ng-template>
+            </ngb-tab>
+
+            <ngb-tab *ngFor="let source of activeDemo?.sources">
+              <ng-template ngbTabTitle>
+                <span [ngSwitch]="source.language">
+                  
+                </span>
+               
+              </ng-template>
+              <ng-template ngbTabContent>
+                <div class="code-container">
+                  <button
+                    class="btn btn-outline-primary copy-code"
+                    (click)="copied()"
+                    ngxClipboard
+                    [cbContent]="source.contents.raw"
+                    [ngbTooltip]="'Copy source'"
+                    [placement]="'top-right'"
+                  >
+                    <i
+                      class="fa"
+                      [ngClass]="{'fa-copy': !(copied$ | async), 'fa-check': (copied$ | async) }"
+                    ></i>
+                  </button>
+                  <pre><code [innerHTML]="source.contents.highlighted"></code></pre>
+                </div>
+              </ng-template>
+            </ngb-tab>
+          </ngb-tabset>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+</div>
